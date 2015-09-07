@@ -5,6 +5,7 @@ function NumberToString (number) {
   this.tens = '';
   this.hundreds = '';
   this.thousands = '';
+  this.tenThousands = '';
 };
 
 NumberToString.prototype.toArray = function toArray () {
@@ -14,33 +15,35 @@ NumberToString.prototype.toArray = function toArray () {
 
 NumberToString.prototype.translateDigit = function translateDigit (digit) {
   if(digit == 1) {
-    return " one "
+    return "one"
   } else if (digit == 2) {
-    return " two "
+    return "two"
   } else if (digit == 3) {
-    return " three "
+    return "three"
   } else if (digit == 4) {
-    return " four "
+    return "four"
   } else if (digit == 5) {
-    return " five "
+    return "five"
   } else if (digit == 6) {
-    return " six "
+    return "six"
   } else if (digit == 7) {
-    return " seven "
+    return "seven"
   } else if (digit == 8) {
-    return " eight "
+    return "eight"
   } else if (digit == 9) {
-    return " nine "
+    return "nine"
   } else if (digit == 0) {
-    return
+    return ""
   }
 };
 
 NumberToString.prototype.translateTensPlace = function translateTensPlace (ones, tens) {
-  if (tens == 1 && ones != 0) {
-    this.findTeen(ones);
+  if (tens == 0) {
+    return ""
+  } else if (tens == 1 && ones != 0) {
+    return this.findTeen(ones);
   } else {
-    this.findMultiplesOfTen(tens);
+    return this.findMultiplesOfTen(tens);
   }
 };
 
@@ -85,6 +88,8 @@ NumberToString.prototype.findMultiplesOfTen = function findMultiplesOfTen (tens)
     return "eighty"
   } else if (tens == 9) {
     return "ninety"
+  } else if (tens == 0) {
+    return ""
   }
 };
 
@@ -92,7 +97,7 @@ NumberToString.prototype.translateHundredsPlace = function translateHundredsPlac
   if (digit == 0) {
     return '';
   } else {
-    return this.translateDigit(digit) + "hundred";
+    return this.translateDigit(digit) + " hundred";
   }
 };
 
@@ -104,33 +109,35 @@ NumberToString.prototype.translateThousandsPlace = function translateThousandsPl
   }
 };
 
-//NumberToString.prototype.string = function string () {
-//  return this.thousands + this.hundreds + this.tens + this.ones;
-//};
+NumberToString.prototype.translateTenThousandsPlace = function translateTenThousandsPlace (ones, tens) {
+  if (tens == 0) {
+    return ''
+  } else if (ones == 0) {
+    return this.findMultiplesOfTen(tens) + " thousand"
+  } else {
+    return this.findTeen(ones) +" thousand"
+  }
+};
 
-//
-//NumberToSting.prototype.translateAll = function translateAll () {
-//  for(var i = 0; i < this.array.length; i++) {
-//
-//    if(i == this.array.length -1) {
-//      var onesDigit = this.array[this.array.length -1];
-//      this.ones = this.translateDigit(onesDigit);
-//
-//    } else if (i == this.array.length - 2) {
-//      var onesDigit = this.array[this.array.length - 1];
-//      var tensDigit = this.array[this.array.length - 2];
-//      this.tens = this.translateTensPlace(onesDigit, tensDigit) + " "
-//
-//    } else if (i == this.array.length - 3) {
-//      var hundredsDigit = this.array[this.array.length - 3];
-//      this.hundreds = this.translateHundredsPlace(hundredsDigit) + " "
-//
-//    } else if (i == this.array.length - 4) {
-//      var thousandsDigit =  this.array[this.array.length - 4];
-//      this.thousands = this.translateThousandsPlace(thousandsDigit) + " "
-//    }
-//  }
-//};
+NumberToString.prototype.string = function string () {
+  this.translateAll();
+  return this.tenThousands + " " + this.thousands + " " + this.hundreds + " " + this.tens + " " + this.ones;
+};
 
-//
-//
+NumberToString.prototype.translateAll = function translateAll () {
+      var onesDigit = this.array[this.array.length -1];
+      this.ones = this.translateDigit(onesDigit);
+
+      var tensDigit = this.array[this.array.length - 2];
+      this.tens = this.translateTensPlace(onesDigit, tensDigit);
+
+      var hundredsDigit = this.array[this.array.length - 3];
+      this.hundreds = this.translateHundredsPlace(hundredsDigit);
+
+      var thousandsDigit =  this.array[this.array.length - 4];
+      this.thousands = this.translateThousandsPlace(thousandsDigit);
+
+      //var tenThousandsDigit = this.array[this.array.length - 5];
+      //this.tenThousands = this.translateTenThousandsPlace(thousandsDigit, tenThousandsDigit);
+
+};
