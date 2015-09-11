@@ -1,70 +1,62 @@
 describe("#NumberToString", function () {
 
   beforeEach(function () {
-    var number = 1432;
+    var number = 432;
     numberToString = new NumberToString(number);
   });
 
-  it("turns a number into an array", function () {
+  it("returns an array", function () {
     var result = numberToString.toArray();
-    expect(result).toEqual(["1", "4", "3", "2"])
+    expect(result).toEqual(['4','3','2'])
   });
 
-  it("translates a single digit from 1 to 9 into a word", function () {
-    var digit = "1";
-    var result = numberToString.translateDigit(digit);
-    expect(result).toEqual('one')
+  it("returns the ones place", function () {
+    numberToString.number = 4;
+    numberToString.toArray();
+    var result = numberToString.translate();
+    expect(result).toEqual(" four")
   });
 
-  it("find the teens", function () {
-    var ones, tens;
-
-    ones = 1;
-    tens = 1;
-
-    result = numberToString.findTeen(ones);
-    expect(result).toEqual("eleven");
+  it("returns the hundreds place", function () {
+    numberToString.number = 400;
+    numberToString.toArray();
+    var result = numberToString.translate();
+    expect(result).toEqual(" four hundred")
   });
 
-  it("finds multiples of ten", function () {
-    ones = 0;
-    tens = 2;
-
-    result = numberToString.findMultiplesOfTen(tens);
-
-    expect(result).toEqual("twenty");
+  it("returns the hundreds place and thousand", function () {
+    numberToString.number = 4400;
+    numberToString.toArray();
+    var result = numberToString.translate();
+    expect(result).toEqual(" four thousand four hundred")
   });
 
-  it("finds the hundreds place", function () {
-    digit = "1";
-
-    result = numberToString.translateHundredsPlace(digit);
-    expect(result).toEqual("one hundred");
+  it("returns the hundreds place and thousand and ones place", function () {
+    numberToString.number = 4404;
+    numberToString.toArray();
+    var result = numberToString.translate();
+    expect(result).toEqual(" four thousand four hundred four")
   });
 
-  it("finds the thousands place", function () {
-    digit = "1";
-
-    result = numberToString.translateThousandsPlace(digit);
-    expect(result).toEqual("one thousand");
+  it("returns the teens place", function () {
+    numberToString.number = 4414;
+    numberToString.toArray();
+    var result = numberToString.translate();
+    expect(result).toEqual(" four thousand four hundred fourteen")
   });
 
-  it("translates all of the numbers into words", function () {
-    numberToString.array = ["4", "1", "2", "3"];
-
-    numberToString.translateAll();
-    expect(numberToString.ones).toEqual('three');
-    expect(numberToString.tens).toEqual('twenty');
-    expect(numberToString.hundreds).toEqual('one hundred');
-    expect(numberToString.thousands).toEqual('four thousand');
+  it("returns the tens place", function () {
+    numberToString.number = 4424;
+    numberToString.toArray();
+    var result = numberToString.translate();
+    expect(result).toEqual(" four thousand four hundred twenty four")
   });
 
-  it("connects the words into a string", function () {
-    numberToString.array = ["4", "1", "1", "3"];
+  it("returns the ones, hundreds, thousands, and ten thousands", function () {
+    numberToString.number = 400444444;
+    numberToString.toArray();
+    var result = numberToString.translate();
+    expect(result).toEqual(" four hundred million four hundred forty four thousand four hundred forty four")
+  });
 
-    spyOn(numberToString, "translateAll").and.callThrough();
-
-    var result = numberToString.string();
-    expect(result).toEqual("four thousand one hundred twenty three")
-  })
 });
